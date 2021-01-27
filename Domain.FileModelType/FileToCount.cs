@@ -2,7 +2,7 @@
 
 namespace Domain.FileModelType
 {
-    public class File
+    public class FileToCount
     {
         public string Name { get; set; }
 

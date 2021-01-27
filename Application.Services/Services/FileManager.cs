@@ -1,28 +1,22 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Application.Services.Interfaces;
+using Domain.FileModelType;
 
 namespace Application.Services
 {
     public class FileManager : IFileManager
     {
-        public Dictionary<string, string> OperateFilesToAnalyze(string directoryPath)
+        public List<FileToCount> GetFileWordsOccurrencesCounted(string directoryPath)
         {
-            // before anything, we'll check that the directory exists and has .txt files
             this.CheckDirectoryPathAndFilesAreValid(directoryPath);
 
-            // first we'll get the filenames from the user-specified directory
             var fileNames = this.GetFileNamesFromDirectory(directoryPath);
+            
+            var filesWithWordsCounted = this.GetListOfAnalyzedFilesAndResults(directoryPath, fileNames);
 
-            // after getting the filenames we'll get the text from the file and return it with its text
-            var filesWithTextProcessed = new Dictionary<string, string>();
-
-            filesWithTextProcessed = this.CreateFileTextDictionary(fileNames);
-
-            // after processing the texts, we return them
-            return filesWithTextProcessed;
+            return filesWithWordsCounted;
         }
 
         public void CheckDirectoryPathAndFilesAreValid(string directoryPath)
@@ -36,7 +30,7 @@ namespace Application.Services
             {
                 throw new FileNotFoundException("No text files where found in the directory");
             }
-        } //completed
+        }
 
         public List<string> GetFileNamesFromDirectory(string directoryPath)
         {
@@ -49,25 +43,38 @@ namespace Application.Services
             }
 
             return fileNamesList;
-        } // completed
+        }
+
+        public List<FileToCount> GetListOfAnalyzedFilesAndResults(string directoryPath, List<string> fileNameList)
+        {
+            List<FileToCount> analyzedFilesList = new List<FileToCount>();
+
+            IFileTextParser fileParser = new FileParser();
+
+            foreach (var currentFile in fileNameList)
+            {
+                var filePath = directoryPath + currentFile;
+
+                var fileText = this.GetTextFromFile(filePath);
+
+                /*var occurrencesWordsDictionary = fileParser.GetOccurrencesWordDictionary(fileText);
+
+                FileToCount file = new FileToCount() 
+                {
+                    Name = currentFile,
+                    WordOccurrences = occurrencesWordsDictionary
+                };
+
+                analyzedFilesList.Add(file);*/
+            }
+
+            return analyzedFilesList;
+        }
 
         public string GetTextFromFile(string textFileName)
         {
             var textFromFile = File.ReadAllText(textFileName);
             return textFromFile;
-        } // completed
-
-        public Dictionary<string, string> CreateFileTextDictionary(List<string> fileNameList)
-        {
-            var fileTextDictionary = new Dictionary<string, string>();
-            Parallel.ForEach(
-                fileNameList,
-                (currentFile) =>
-                    {
-                        fileTextDictionary.Add(currentFile, this.GetTextFromFile(currentFile));
-                    });
-
-            return fileTextDictionary;
-        } // completed
+        }
     }
 }
