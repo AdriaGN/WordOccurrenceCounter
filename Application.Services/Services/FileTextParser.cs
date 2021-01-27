@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Linq;
 using Application.Services.Interfaces;
 using Domain.FileModelType;
 
 namespace Application.Services
 {
-    using System.IO;
-    using System.Threading.Tasks;
 
     public class FileParser : IFileTextParser
     {

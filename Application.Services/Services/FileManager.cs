@@ -8,6 +8,13 @@ namespace Application.Services
 {
     public class FileManager : IFileManager
     {
+        private IFileTextParser _fileTextParser;
+
+        public FileManager(IFileTextParser fileTextParser)
+        {
+            this._fileTextParser = fileTextParser;
+        }
+
         public List<FileToCount> GetFileWordsOccurrencesCounted(string directoryPath)
         {
             this.CheckDirectoryPathAndFilesAreValid(directoryPath);
@@ -49,15 +56,13 @@ namespace Application.Services
         {
             List<FileToCount> analyzedFilesList = new List<FileToCount>();
 
-            IFileTextParser fileParser = new FileParser();  //                                      TEMPORAL
-
             foreach (var currentFile in fileNameList)
             {
                 var filePath = directoryPath + currentFile;
 
                 var fileText = this.GetTextFromFile(filePath);
 
-                var occurrencesWordsDictionary = fileParser.GetOccurrencesWordDictionary(fileText);
+                var occurrencesWordsDictionary = this._fileTextParser.GetOccurrencesWordDictionary(fileText);
 
                 FileToCount file = new FileToCount() 
                 {
