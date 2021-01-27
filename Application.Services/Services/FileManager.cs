@@ -49,7 +49,7 @@ namespace Application.Services
         {
             List<FileToCount> analyzedFilesList = new List<FileToCount>();
 
-            IFileTextParser fileParser = new FileParser();
+            IFileTextParser fileParser = new FileParser();  //                                      TEMPORAL
 
             foreach (var currentFile in fileNameList)
             {
@@ -57,7 +57,7 @@ namespace Application.Services
 
                 var fileText = this.GetTextFromFile(filePath);
 
-                /*var occurrencesWordsDictionary = fileParser.GetOccurrencesWordDictionary(fileText);
+                var occurrencesWordsDictionary = fileParser.GetOccurrencesWordDictionary(fileText);
 
                 FileToCount file = new FileToCount() 
                 {
@@ -65,7 +65,7 @@ namespace Application.Services
                     WordOccurrences = occurrencesWordsDictionary
                 };
 
-                analyzedFilesList.Add(file);*/
+                analyzedFilesList.Add(file);
             }
 
             return analyzedFilesList;
