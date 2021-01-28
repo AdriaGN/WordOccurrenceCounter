@@ -15,6 +15,6 @@ namespace Application.Services.Interfaces
 
         List<FileToCount> GetListOfAnalyzedFilesAndResults(string directoryPath, List<string> fileNameList); //will return a dictionary with every file and its text
 
-        string GetTextFromFile(string filename); //will return the text of a file
+        string GetTextFromFile(string textFileNamePath); //will return the text of a file
     }
 }

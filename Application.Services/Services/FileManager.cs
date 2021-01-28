@@ -28,9 +28,14 @@ namespace Application.Services
 
         public void CheckDirectoryPathAndFilesAreValid(string directoryPath)
         {
-            if (Directory.Exists(directoryPath))
+            if (directoryPath == null)
             {
-                throw new ArgumentException("The directory path is incorrect or doesn't exist.");
+                throw new ArgumentNullException("The directory path is incorrect or doesn't exist.");
+            }
+
+            if (!Directory.Exists(directoryPath))
+            {
+                throw new DirectoryNotFoundException("The directory path is incorrect or doesn't exist.");
             }
 
             if (Directory.GetFiles(directoryPath, "*.txt").Length == 0)
@@ -76,9 +81,9 @@ namespace Application.Services
             return analyzedFilesList;
         }
 
-        public string GetTextFromFile(string textFileName)
+        public string GetTextFromFile(string textFileNamePath)
         {
-            var textFromFile = File.ReadAllText(textFileName);
+            var textFromFile = File.ReadAllText(textFileNamePath);
             return textFromFile;
         }
     }

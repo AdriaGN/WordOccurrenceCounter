@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Services", "App
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Testing", "Application.Testing\Application.Testing.csproj", "{BBAF4E5C-FFC1-43AC-8E7A-A17C4B6B3DAD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E57F3590-8C3C-4DF0-A062-2CC0D1B94A4C} = {E57F3590-8C3C-4DF0-A062-2CC0D1B94A4C}
+		{DBEE0FDC-5A91-4612-8FD1-3ED28550782A} = {DBEE0FDC-5A91-4612-8FD1-3ED28550782A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Services", "Infrastructure.Services\Infrastructure.Services.csproj", "{DB531D30-DAFB-427F-8CFF-AA13022CFD20}"
 EndProject
