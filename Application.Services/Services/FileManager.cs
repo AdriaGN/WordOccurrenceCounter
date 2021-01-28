@@ -28,12 +28,12 @@ namespace Application.Services
 
         public void CheckDirectoryPathAndFilesAreValid(string directoryPath)
         {
-            this.AdaptDirectoryPath(directoryPath);
-
             if (directoryPath == null)
             {
                 throw new ArgumentNullException("The directory path is incorrect or doesn't exist.");
             }
+
+            this.AdaptDirectoryPath(directoryPath);
 
             if (!Directory.Exists(directoryPath))
             {
@@ -48,7 +48,7 @@ namespace Application.Services
 
         private string AdaptDirectoryPath(string directoryPath)
         {
-            if (!directoryPath.EndsWith("/"))
+            if (!(directoryPath.EndsWith("/") || (directoryPath.EndsWith("\\"))))
             {
                 directoryPath = directoryPath + "\\";
             }
@@ -78,6 +78,7 @@ namespace Application.Services
                 var filePath = directoryPath + currentFile;
 
                 var fileText = this.GetTextFromFile(filePath);
+
 
                 var occurrencesWordsDictionary = this.fileTextParser.GetOccurrencesWordDictionary(fileText);
 

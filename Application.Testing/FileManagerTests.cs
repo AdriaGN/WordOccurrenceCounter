@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Moq;
 using Application.Services;
 using Application.Services.Interfaces;
@@ -26,16 +27,53 @@ namespace Application.Testing
         private static List<string> simpleFilesList = new List<string>{ "SingleSample.txt" };
         private static List<string> multipleFilesList = new List<string> { "Text_1.txt", "Text_2.txt", "Text_3.txt" };
 
+        // Dictionary to mock and 
+        private static Dictionary<string, int> mockDictionary = new Dictionary<string, int>
+                                                                    { { "hello", 1 }, { "there", 1 }, { "i", 1 }, { "am", 1 },
+                                                                      { "a", 1 }, { "text", 1 }, { "file", 1 } };
+
         // DI
         private IFileManager fileManager;
         private IFileTextParser fileTextParser;
 
         [TestInitialize]
         public void TestInitialization()
-        {
+        { 
             var mock = new Mock<IFileTextParser>();
+            mock.Setup(m => 
+                m.GetOccurrencesWordDictionary(It.IsAny<string>())).Returns(mockDictionary);
+
             this.fileTextParser = mock.Object;
             this.fileManager = new FileManager(this.fileTextParser);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetFileWordsOccurrencesCounted_DirectoryPathIsNull_ThrowsArgumentNullException()
+        {
+            this.fileManager.GetFileWordsOccurrencesCounted(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DirectoryNotFoundException))]
+        public void GetFileWordsOccurrencesCounted_DirectoryPathIsEmpty_ThrowsDirectoryNotFoundException()
+        {
+            this.fileManager.GetFileWordsOccurrencesCounted(string.Empty);
+        }
+
+        [TestMethod]
+        public void GetFileWordsOccurrencesCounted_AllInputsAreCorrect_ReturnsAListOfFilesCounted()
+        {
+            FileToCount expectedFileRead = new FileToCount()
+                                               {
+                                                   Name = "SingleSample.txt",
+                                                   WordOccurrences = mockDictionary
+                                               };
+
+            List<FileToCount> returnedList = this.fileManager.GetFileWordsOccurrencesCounted(SingleSample);
+
+            Assert.AreEqual(expectedFileRead.Name, returnedList.First().Name);
+            CollectionAssert.AreEqual(expectedFileRead.WordOccurrences, returnedList.First().WordOccurrences);
         }
 
         [TestMethod]
@@ -83,6 +121,7 @@ namespace Application.Testing
         public void GetFileNamesFromDirectory_DirectoryPathIsWrong_ReturnsEmptyFileNameList()
         {
             List<string> returnedFileNameList = this.fileManager.GetFileNamesFromDirectory(ProjectDirectory);
+
             Assert.IsTrue(returnedFileNameList.Count == 0);
         }
 
@@ -90,6 +129,7 @@ namespace Application.Testing
         public void GetFileNamesFromDirectory_DirectoryPathIsCorrectAndSingleFile_ReturnsOneFileNameList()
         {
             List<string> returnedFileNameList = this.fileManager.GetFileNamesFromDirectory(SingleSample);
+
             Assert.IsTrue(returnedFileNameList.Count == numberOfSimpleFiles);
             CollectionAssert.AreEqual(simpleFilesList, returnedFileNameList);
         }
@@ -98,35 +138,46 @@ namespace Application.Testing
         public void GetFileNamesFromDirectory_DirectoryPathIsCorrectAndMultipleFile_ReturnsMultipleFileNameList()
         {
             List<string> returnedFileNameList = this.fileManager.GetFileNamesFromDirectory(MultipleSamples);
+
             Assert.IsTrue(returnedFileNameList.Count == numberOfMultipleFiles);
             CollectionAssert.AreEqual(multipleFilesList, returnedFileNameList);
         }
-
-
-
-
 
         [TestMethod]
-        public void GetFileNamesFromDirectory_DirectoryPathIsCorrectAndMultipleFile_ReturnsMultipleFileNameList()
+        [ExpectedException(typeof(FileNotFoundException))]
+        public void GetListOfAnalyzedFilesAndResults_DirectoryPathIsNull_ThrowsFileNotFoundException()
         {
-            List<string> returnedFileNameList = this.fileManager.GetFileNamesFromDirectory(MultipleSamples);
-            Assert.IsTrue(returnedFileNameList.Count == numberOfMultipleFiles);
-            CollectionAssert.AreEqual(multipleFilesList, returnedFileNameList);
+            this.fileManager.GetListOfAnalyzedFilesAndResults(null, simpleFilesList);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(FileNotFoundException))]
+        public void GetListOfAnalyzedFilesAndResults_DirectoryPathIsEmpty_ThrowsFileNotFoundException()
+        {
+            this.fileManager.GetListOfAnalyzedFilesAndResults(string.Empty, simpleFilesList);
+        }
 
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void GetListOfAnalyzedFilesAndResults_FileNameListIsNull_ThrowsArgumentNullException()
+        {
+            this.fileManager.GetListOfAnalyzedFilesAndResults(string.Empty, null);
+        }
 
+        [TestMethod]
+        public void GetListOfAnalyzedFilesAndResults_AllInputsAreCorrect_ReturnsAListOfFilesCounted()
+        {
+            FileToCount expectedFileRead = new FileToCount()
+                                               {
+                                                   Name = "SingleSample.txt",
+                                                   WordOccurrences = mockDictionary
+                                               };
 
-        // HERE GOES THE GetListOfAnalyzedFilesAndResults TESTS
+            List<FileToCount> returnedList = this.fileManager.GetListOfAnalyzedFilesAndResults(SingleSample, simpleFilesList);
 
-
-
-
-
-
-
-
-
+            Assert.AreEqual(expectedFileRead.Name, returnedList.First().Name);
+            CollectionAssert.AreEqual(expectedFileRead.WordOccurrences, returnedList.First().WordOccurrences);
+        }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
