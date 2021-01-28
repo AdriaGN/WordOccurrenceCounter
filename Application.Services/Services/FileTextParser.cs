@@ -5,8 +5,7 @@ using Domain.FileModelType;
 
 namespace Application.Services
 {
-
-    public class FileParser : IFileTextParser
+    public class FileTextParser : IFileTextParser
     {
         public Dictionary<string, int> GetOccurrencesWordDictionary(string textToAnalyze)
         {
@@ -19,9 +18,9 @@ namespace Application.Services
 
         public string RemoveSpecialCharactersFromText(string textToClean)
         {
-            Regex regexTool = new Regex("(?:[^a-zA-Z0-9 ]|(?<=[\'])s)");
+            Regex regexTool = new Regex("(?:[^a-zA-Z ]|(?<=[\'])s)");
 
-            var cleanedText = regexTool.Replace(textToClean, " ");
+            var cleanedText = regexTool.Replace(textToClean, "");
 
             return cleanedText;
         }
@@ -41,9 +40,11 @@ namespace Application.Services
 
             foreach (var word in textPreparedToCount.Split())
             {
-                var wordCounter = new MapReduceWord(word, 1);
-                
-                listWithMappedWords.Add(wordCounter);
+                if (word != string.Empty)
+                {
+                    var wordCounter = new MapReduceWord(word, 1);
+                    listWithMappedWords.Add(wordCounter);
+                }
             }
 
             return listWithMappedWords;

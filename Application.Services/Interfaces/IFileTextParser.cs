@@ -1,7 +1,7 @@
-﻿namespace Application.Services.Interfaces
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace Application.Services.Interfaces
+{
     public interface IFileTextParser
     {
         Dictionary<string, int> GetOccurrencesWordDictionary(string textToAnalyze);

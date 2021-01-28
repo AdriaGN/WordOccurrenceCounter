@@ -8,11 +8,11 @@ namespace Application.Services
 {
     public class FileManager : IFileManager
     {
-        private IFileTextParser _fileTextParser;
+        private readonly IFileTextParser fileTextParser;
 
         public FileManager(IFileTextParser fileTextParser)
         {
-            this._fileTextParser = fileTextParser;
+            this.fileTextParser = fileTextParser;
         }
 
         public List<FileToCount> GetFileWordsOccurrencesCounted(string directoryPath)
@@ -28,6 +28,8 @@ namespace Application.Services
 
         public void CheckDirectoryPathAndFilesAreValid(string directoryPath)
         {
+            this.AdaptDirectoryPath(directoryPath);
+
             if (directoryPath == null)
             {
                 throw new ArgumentNullException("The directory path is incorrect or doesn't exist.");
@@ -42,6 +44,16 @@ namespace Application.Services
             {
                 throw new FileNotFoundException("No text files where found in the directory");
             }
+        }
+
+        private string AdaptDirectoryPath(string directoryPath)
+        {
+            if (!directoryPath.EndsWith("/"))
+            {
+                directoryPath = directoryPath + "\\";
+            }
+
+            return directoryPath;
         }
 
         public List<string> GetFileNamesFromDirectory(string directoryPath)
@@ -67,7 +79,7 @@ namespace Application.Services
 
                 var fileText = this.GetTextFromFile(filePath);
 
-                var occurrencesWordsDictionary = this._fileTextParser.GetOccurrencesWordDictionary(fileText);
+                var occurrencesWordsDictionary = this.fileTextParser.GetOccurrencesWordDictionary(fileText);
 
                 FileToCount file = new FileToCount() 
                 {

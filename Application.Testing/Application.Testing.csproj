@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="FileManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FileTextParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
