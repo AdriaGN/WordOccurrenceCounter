@@ -22,10 +22,12 @@ namespace Application.Services
 
         public string RemoveSpecialCharactersFromText(string textToClean)
         {
-            Regex regexTool = new Regex("(?:[^\\p{L}0-9 ]|(?<=[\'])s)");
+            Regex regexNewLines = new Regex("(?:(\\r\\n\\r\\n))");
+            var cleanedText = regexNewLines.Replace(textToClean, " ");
 
-            var cleanedText = regexTool.Replace(textToClean, "");
-
+            Regex regexSpecialCharactersRegex = new Regex("(?:[^\\p{L}0-9 ]|(?<=[\'])s)");
+            cleanedText = regexSpecialCharactersRegex.Replace(cleanedText, "");
+            
             return cleanedText;
         }
 
