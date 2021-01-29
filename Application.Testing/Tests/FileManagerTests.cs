@@ -27,10 +27,10 @@ namespace Application.Testing
         private static List<string> simpleFilesList = new List<string>{ "SingleSample.txt" };
         private static List<string> multipleFilesList = new List<string> { "Text_1.txt", "Text_2.txt", "Text_3.txt" };
 
-        // Dictionary to mock and 
-        private static Dictionary<string, int> mockDictionary = new Dictionary<string, int>
-                                                                    { { "hello", 1 }, { "there", 1 }, { "i", 1 }, { "am", 1 },
-                                                                      { "a", 1 }, { "text", 1 }, { "file", 1 } };
+        // Dictionary to mock
+        private static readonly Dictionary<string, int> MockDictionary = new Dictionary<string, int>
+                                                                             { { "hello", 1 }, { "there", 1 }, { "i", 1 }, { "am", 1 },
+                                                                                 { "a", 1 }, { "text", 1 }, { "file", 1 } };
 
         // DI
         private IFileManager fileManager;
@@ -41,7 +41,7 @@ namespace Application.Testing
         { 
             var mock = new Mock<IFileTextParser>();
             mock.Setup(m => 
-                m.GetOccurrencesWordDictionary(It.IsAny<string>())).Returns(mockDictionary);
+                m.GetOccurrencesWordDictionary(It.IsAny<string>())).Returns(MockDictionary);
 
             this.fileTextParser = mock.Object;
             this.fileManager = new FileManager(this.fileTextParser);
@@ -67,7 +67,7 @@ namespace Application.Testing
             FileToCount expectedFileRead = new FileToCount()
                                                {
                                                    Name = "SingleSample.txt",
-                                                   WordOccurrences = mockDictionary
+                                                   WordOccurrences = MockDictionary
                                                };
 
             List<FileToCount> returnedList = this.fileManager.GetFileWordsOccurrencesCounted(SingleSample);
@@ -170,7 +170,7 @@ namespace Application.Testing
             FileToCount expectedFileRead = new FileToCount()
                                                {
                                                    Name = "SingleSample.txt",
-                                                   WordOccurrences = mockDictionary
+                                                   WordOccurrences = MockDictionary
                                                };
 
             List<FileToCount> returnedList = this.fileManager.GetListOfAnalyzedFilesAndResults(SingleSample, simpleFilesList);

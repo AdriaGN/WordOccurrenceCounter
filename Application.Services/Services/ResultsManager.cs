@@ -28,7 +28,7 @@ namespace Application.Services
             {
                 if (file.WordOccurrences.ContainsKey(wordToFind))
                 {
-                    dictOfMatchingFiles.Add(file.Name, file.WordOccurrences["wordToFind"]);
+                    dictOfMatchingFiles.Add(file.Name, file.WordOccurrences[wordToFind]);
                 }
             }
 

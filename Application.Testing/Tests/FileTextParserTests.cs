@@ -13,26 +13,26 @@ namespace Application.Testing
         private static int numberOfkeys = 4;
 
         // DI
-        private IFileTextParser fileManager;
+        private IFileTextParser fileTextParser;
 
         [TestInitialize]
         public void TestInitialization()
         {
-            this.fileManager = new FileTextParser();
+            this.fileTextParser = new FileTextParser();
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetOccurrencesWordDictionary_TextIsNull_ThrowsArgumentNullException()
         {
-            this.fileManager.GetOccurrencesWordDictionary(null);
+            this.fileTextParser.GetOccurrencesWordDictionary(null);
         }
 
         [TestMethod]
         public void GetOccurrencesWordDictionary_TextIsEmpty_ReturnsEmptyDictionary()
         {
             Dictionary<string, int> expectedReturn = new Dictionary<string, int>();
-            var returnedDictionary = this.fileManager.GetOccurrencesWordDictionary(string.Empty);
+            var returnedDictionary = this.fileTextParser.GetOccurrencesWordDictionary(string.Empty);
             CollectionAssert.AreEqual(expectedReturn, returnedDictionary);
         }
 
@@ -41,7 +41,7 @@ namespace Application.Testing
         {
             var inputString = "this is a x x x x !!!! ???? %%%%";
             Dictionary<string, int> expectedReturn = new Dictionary<string, int> { { "this", 1 }, { "is", 1 }, { "a", 1 }, { "x", 4 } };
-            Dictionary<string, int> returnedDictionary = this.fileManager.GetOccurrencesWordDictionary(inputString);
+            Dictionary<string, int> returnedDictionary = this.fileTextParser.GetOccurrencesWordDictionary(inputString);
             Assert.IsTrue(returnedDictionary.Keys.Count == numberOfkeys);
             CollectionAssert.AreEqual(expectedReturn, returnedDictionary);
         }
@@ -50,20 +50,20 @@ namespace Application.Testing
         [ExpectedException(typeof(ArgumentNullException))]
         public void RemoveSpecialCharactersFromText_TextIsNull_ThrowsArgumentNullException()
         {
-            this.fileManager.RemoveSpecialCharactersFromText(null);
+            this.fileTextParser.RemoveSpecialCharactersFromText(null);
         }
 
         [TestMethod]
         public void RemoveSpecialCharactersFromText_TextIsEmpty_ReturnsEmptyText()
         {
-            this.fileManager.RemoveSpecialCharactersFromText(string.Empty);
+            this.fileTextParser.RemoveSpecialCharactersFromText(string.Empty);
         }
 
         [TestMethod]
         public void RemoveSpecialCharactersFromText_TextHasNoSpecialCharacters_ReturnsSameText()
         {
             var inputText = "I am a normal text with no special characters";
-            var returnedText = this.fileManager.RemoveSpecialCharactersFromText(inputText);
+            var returnedText = this.fileTextParser.RemoveSpecialCharactersFromText(inputText);
             Assert.AreEqual(inputText, returnedText);
         }
 
@@ -72,7 +72,7 @@ namespace Application.Testing
         {
             var inputText = "Only 12345this6789 text?_!·$@~à will be ãáçñvisible";
             var expectedText = "Only this text will be visible";
-            var returnedText = this.fileManager.RemoveSpecialCharactersFromText(inputText);
+            var returnedText = this.fileTextParser.RemoveSpecialCharactersFromText(inputText);
             Assert.AreEqual(expectedText, returnedText);
         }
 
@@ -80,14 +80,14 @@ namespace Application.Testing
         [ExpectedException(typeof(NullReferenceException))]
         public void CountWordsFromText_TextIsNull_ThrowsNullReferenceException()
         {
-            this.fileManager.CountWordsFromText(null);
+            this.fileTextParser.CountWordsFromText(null);
         }
 
         [TestMethod]
         public void CountWordsFromText_TextIsEmpty_ReturnsEmptyMapReduceWord()
         {
             Dictionary<string, int> expectedReturn = new Dictionary<string, int>();
-            Dictionary<string, int> returnedDictionary = this.fileManager.CountWordsFromText(string.Empty);
+            Dictionary<string, int> returnedDictionary = this.fileTextParser.CountWordsFromText(string.Empty);
             Assert.IsTrue(returnedDictionary.Keys.Count == 0);
             CollectionAssert.AreEqual(expectedReturn, returnedDictionary);
         }
@@ -97,7 +97,7 @@ namespace Application.Testing
         {
             var inputString = "this is a x x x x";
             Dictionary<string, int> expectedReturn = new Dictionary<string, int> { {"this", 1}, { "is", 1 }, { "a", 1 }, { "x", 4 } };
-            Dictionary<string, int> returnedDictionary = this.fileManager.CountWordsFromText(inputString);
+            Dictionary<string, int> returnedDictionary = this.fileTextParser.CountWordsFromText(inputString);
             Assert.IsTrue(returnedDictionary.Keys.Count == numberOfkeys);
             CollectionAssert.AreEqual(expectedReturn, returnedDictionary);
         }
