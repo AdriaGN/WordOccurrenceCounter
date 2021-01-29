@@ -18,7 +18,7 @@ namespace Application.Services
 
         public string RemoveSpecialCharactersFromText(string textToClean)
         {
-            Regex regexTool = new Regex("(?:[^a-zA-Z ]|(?<=[\'])s)");
+            Regex regexTool = new Regex("(?:[^\\p{L}0-9 ]|(?<=[\'])s)");
 
             var cleanedText = regexTool.Replace(textToClean, "");
 

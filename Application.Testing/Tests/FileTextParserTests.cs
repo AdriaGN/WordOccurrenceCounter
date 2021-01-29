@@ -70,8 +70,8 @@ namespace Application.Testing
         [TestMethod]
         public void RemoveSpecialCharactersFromText_TextHasSpecialCharacters_ReturnsFilteredText()
         {
-            var inputText = "Only 12345this6789 text?_!·$@~à will be ãáçñvisible";
-            var expectedText = "Only this text will be visible";
+            var inputText = "Only 12345this6789 text?_!·$@~à will be ãáçñvisible, the numbers and stresses too!";
+            var expectedText = "Only 12345this6789 textà will be ãáçñvisible the numbers and stresses too";
             var returnedText = this.fileTextParser.RemoveSpecialCharactersFromText(inputText);
             Assert.AreEqual(expectedText, returnedText);
         }
