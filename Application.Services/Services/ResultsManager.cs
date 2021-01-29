@@ -38,10 +38,8 @@ namespace Application.Services
 
         public IEnumerable<KeyValuePair<string, int>> OrderTopFilesWithOccurrences(Dictionary<string, int> dictOfMatchingFiles)
         {
-            var numberOfResults = int.Parse(ConfigurationManager.AppSettings["NumberOfResults"]);
-
             var orderedResults =
-                (from resultFile in dictOfMatchingFiles orderby resultFile.Value descending select resultFile).Take(numberOfResults);
+                (from resultFile in dictOfMatchingFiles orderby resultFile.Value descending select resultFile).Take(10);
 
             return orderedResults;
         }
