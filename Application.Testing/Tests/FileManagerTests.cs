@@ -55,8 +55,8 @@ namespace Application.Testing
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DirectoryNotFoundException))]
-        public void GetFileWordsOccurrencesCounted_DirectoryPathIsEmpty_ThrowsDirectoryNotFoundException()
+        [ExpectedException(typeof(FileNotFoundException))]
+        public void GetFileWordsOccurrencesCounted_DirectoryPathIsEmpty_ThrowsFileNotFoundException()
         {
             this.fileManager.GetFileWordsOccurrencesCounted(string.Empty);
         }
@@ -95,6 +95,16 @@ namespace Application.Testing
         public void CheckDirectoryPathAndFilesAreValid_DirectoryPathIsEmpty_ThrowsFileNotFoundException()
         {
             this.fileManager.CheckDirectoryPathAndFilesAreValid(ProjectDirectory);
+        }
+
+        [TestMethod]
+        public void CheckDirectoryPathAndFilesAreValid_DirectoryPathIsIncomplete_ReturnsNewValidPath()
+        {
+            var expectedOutput = ProjectDirectory + "\\TextSamples\\EmptySampleText\\";
+
+            var pathModified = this.fileManager.CheckDirectoryPathAndFilesAreValid(ProjectDirectory + "\\TextSamples\\EmptySampleText");
+
+            Assert.AreEqual(expectedOutput, pathModified);
         }
 
         [TestMethod]

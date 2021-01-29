@@ -16,7 +16,7 @@ namespace Application.Services
 
             foreach (var file in orderedMatchingFiles)
             {
-                Console.Write(file.Key + ": " + file.Value);
+                Console.Write(file.Key + ": " + file.Value + Environment.NewLine);
             }
         }
 

@@ -17,7 +17,7 @@ namespace Application.Services
 
         public List<FileToCount> GetFileWordsOccurrencesCounted(string directoryPath)
         {
-            this.CheckDirectoryPathAndFilesAreValid(directoryPath);
+            directoryPath = this.CheckDirectoryPathAndFilesAreValid(directoryPath);
 
             var fileNames = this.GetFileNamesFromDirectory(directoryPath);
             
@@ -26,14 +26,14 @@ namespace Application.Services
             return filesWithWordsCounted;
         }
 
-        public void CheckDirectoryPathAndFilesAreValid(string directoryPath)
+        public string CheckDirectoryPathAndFilesAreValid(string directoryPath)
         {
             if (directoryPath == null)
             {
                 throw new ArgumentNullException("The directory path is incorrect or doesn't exist.");
             }
 
-            this.AdaptDirectoryPath(directoryPath);
+            directoryPath = this.AdaptDirectoryPath(directoryPath);
 
             if (!Directory.Exists(directoryPath))
             {
@@ -44,6 +44,8 @@ namespace Application.Services
             {
                 throw new FileNotFoundException("No text files where found in the directory");
             }
+
+            return directoryPath;
         }
 
         private string AdaptDirectoryPath(string directoryPath)

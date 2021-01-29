@@ -7,7 +7,7 @@ namespace Application.Services.Interfaces
     {
         List<FileToCount> GetFileWordsOccurrencesCounted(string directoryPath);
 
-        void CheckDirectoryPathAndFilesAreValid(string directoryPath);
+        string CheckDirectoryPathAndFilesAreValid(string directoryPath);
 
         List<string> GetFileNamesFromDirectory(string directoryPath);
 

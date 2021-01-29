@@ -7,6 +7,10 @@ namespace Application.Services
 {
     public class FileTextParser : IFileTextParser
     {
+        public FileTextParser()
+        {
+        }
+
         public Dictionary<string, int> GetOccurrencesWordDictionary(string textToAnalyze)
         {
             var cleanedTextToCount = this.RemoveSpecialCharactersFromText(textToAnalyze);

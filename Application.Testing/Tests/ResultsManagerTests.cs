@@ -117,7 +117,7 @@ namespace Application.Testing
                                                   WordOccurrences = MockDictionary
                                               };
                 List<FileToCount> listToCount = new List<FileToCount> { fileToCount };
-                var expectedConsoleOutput = ("TextName: 6");
+                var expectedConsoleOutput = ("TextName: 6" + Environment.NewLine);
 
                 this.resultManager.ShowResults(wordToSearch, listToCount);
 
