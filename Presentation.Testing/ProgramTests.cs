@@ -1,13 +1,14 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Presentation;
 
 namespace Presentation.Testing
 {
     [TestClass]
-    public class UnitTest1
+    public class ProgramTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void Main_UIStartsWithWrongPath_ReturnsException()
         {
         }
     }
