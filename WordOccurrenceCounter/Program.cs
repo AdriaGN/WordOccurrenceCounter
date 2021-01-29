@@ -9,29 +9,40 @@ namespace Presentation.UI
     {
         static void Main(string[] args)
         {
+            // DI registration
             IUnityContainer container = new UnityContainer();
             container.RegisterType<IFileManager, FileManager>();
             container.RegisterType<IFileTextParser, FileTextParser>();
             container.RegisterType<IResultsManager, ResultsManager>();
 
-            var filesPath = args[0];
-
-            var filesToParse = container.Resolve<IFileManager>();
-            var countedOccurrences = filesToParse.GetFileWordsOccurrencesCounted(filesPath);
-
-            string inputWord = string.Empty;
-
-            while (inputWord != ":q!")
+            try
             {
-                Console.WriteLine("Put your word here: ");
-                inputWord = Console.ReadLine();
+                var filesPath = args[0];
+                var inputWord = string.Empty;
 
-                if (inputWord != ":q!")
+                var fileManager = container.Resolve<IFileManager>();
+                var countedOccurrences = fileManager.GetFileWordsOccurrencesCounted(filesPath);
+
+                while (inputWord != ":q!")
                 {
-                    var results = container.Resolve<IResultsManager>();
-                    results.ShowResults(inputWord?.ToLower(), countedOccurrences);
+                    Console.Write("Input the word you want to search (type :q! to exit): ");
+                    inputWord = Console.ReadLine();
+
+                    if (inputWord != ":q!")
+                    {
+                        var results = container.Resolve<IResultsManager>();
+                        results.ShowResults(inputWord?.ToLower(), countedOccurrences);
+                    }
+                    Console.WriteLine();
                 }
             }
+            catch (Exception exception)
+            {
+                Console.WriteLine("ERROR: " + exception.Message + Environment.NewLine);
+            }
+
+            Console.Write("Press enter key to exit...");
+            Console.ReadLine();
         }
     }
 }

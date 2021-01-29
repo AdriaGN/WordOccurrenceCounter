@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using Domain.FileModelType;
@@ -16,7 +17,7 @@ namespace Application.Services
 
             foreach (var file in orderedMatchingFiles)
             {
-                Console.Write(file.Key + ": " + file.Value + Environment.NewLine);
+                Console.Write(file.Key + ": " + file.Value + " occurrences" + Environment.NewLine);
             }
         }
 
@@ -37,8 +38,10 @@ namespace Application.Services
 
         public IEnumerable<KeyValuePair<string, int>> OrderTopFilesWithOccurrences(Dictionary<string, int> dictOfMatchingFiles)
         {
+            var numberOfResults = int.Parse(ConfigurationManager.AppSettings["NumberOfResults"]);
+
             var orderedResults =
-                (from resultFile in dictOfMatchingFiles orderby resultFile.Value descending select resultFile).Take(10);
+                (from resultFile in dictOfMatchingFiles orderby resultFile.Value descending select resultFile).Take(numberOfResults);
 
             return orderedResults;
         }
