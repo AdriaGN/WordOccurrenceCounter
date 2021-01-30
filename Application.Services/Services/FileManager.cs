@@ -3,24 +3,29 @@ using System.IO;
 using System.Collections.Generic;
 using Application.Services.Interfaces;
 using Domain.FileModelType;
+using Infrastructure.Services.Interfaces;
 
 namespace Application.Services
 {
     public class FileManager : IFileManager
     {
         private readonly IFileTextParser fileTextParser;
+        private readonly ILoggerApp loggerApp;
 
-        public FileManager(IFileTextParser fileTextParser)
+
+        public FileManager(IFileTextParser fileTextParser, ILoggerApp loggerApp)
         {
             this.fileTextParser = fileTextParser;
+            this.loggerApp = loggerApp;
         }
 
         public List<FileToCount> GetFileWordsOccurrencesCounted(string directoryPath)
         {
             directoryPath = this.CheckDirectoryPathAndFilesAreValid(directoryPath);
-
             var fileNames = this.GetFileNamesFromDirectory(directoryPath);
             
+            this.loggerApp.Debug(fileNames.Count + " text file were found in the directory " + directoryPath + Environment.NewLine);
+
             var filesWithWordsCounted = this.GetListOfAnalyzedFilesAndResults(directoryPath, fileNames);
 
             return filesWithWordsCounted;
@@ -65,7 +70,7 @@ namespace Application.Services
 
             foreach (var file in files)
             {
-              fileNamesList.Add(Path.GetFileName(file));  
+                fileNamesList.Add(Path.GetFileName(file));  
             }
 
             return fileNamesList;
@@ -77,10 +82,9 @@ namespace Application.Services
 
             foreach (var currentFile in fileNameList)
             {
+                this.loggerApp.Trace("Analizing: " + currentFile);
                 var filePath = directoryPath + currentFile;
-
                 var fileText = this.GetTextFromFile(filePath);
-
 
                 var occurrencesWordsDictionary = this.fileTextParser.GetOccurrencesWordDictionary(fileText);
 
@@ -91,6 +95,7 @@ namespace Application.Services
                 };
 
                 analyzedFilesList.Add(file);
+                this.loggerApp.Trace("File " + currentFile + " was successfully analized");
             }
 
             return analyzedFilesList;

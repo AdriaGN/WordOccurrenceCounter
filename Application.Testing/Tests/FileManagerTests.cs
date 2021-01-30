@@ -7,6 +7,7 @@ using Moq;
 using Application.Services;
 using Application.Services.Interfaces;
 using Domain.FileModelType;
+using Infrastructure.Services.Interfaces;
 
 namespace Application.Testing
 {
@@ -35,16 +36,18 @@ namespace Application.Testing
         // DI
         private IFileManager fileManager;
         private IFileTextParser fileTextParser;
+        private ILoggerApp loggerApp;
 
         [TestInitialize]
         public void TestInitialization()
-        { 
-            var mock = new Mock<IFileTextParser>();
-            mock.Setup(m => 
+        {
+            var mockTextParser = new Mock<IFileTextParser>();
+            var mockLoggerApp = new Mock<ILoggerApp>();
+            mockTextParser.Setup(m => 
                 m.GetOccurrencesWordDictionary(It.IsAny<string>())).Returns(MockDictionary);
-
-            this.fileTextParser = mock.Object;
-            this.fileManager = new FileManager(this.fileTextParser);
+            this.fileTextParser = mockTextParser.Object;
+            this.loggerApp = mockLoggerApp.Object;
+            this.fileManager = new FileManager(this.fileTextParser, this.loggerApp);
         }
 
         [TestMethod]
