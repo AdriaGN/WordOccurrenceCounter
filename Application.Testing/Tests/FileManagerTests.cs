@@ -45,8 +45,10 @@ namespace Application.Testing
             var mockLoggerApp = new Mock<ILoggerApp>();
             mockTextParser.Setup(m => 
                 m.GetOccurrencesWordDictionary(It.IsAny<string>())).Returns(MockDictionary);
+
             this.fileTextParser = mockTextParser.Object;
             this.loggerApp = mockLoggerApp.Object;
+
             this.fileManager = new FileManager(this.fileTextParser, this.loggerApp);
         }
 
@@ -67,7 +69,7 @@ namespace Application.Testing
         [TestMethod]
         public void GetFileWordsOccurrencesCounted_AllInputsAreCorrect_ReturnsAListOfFilesCounted()
         {
-            FileToCount expectedFileRead = new FileToCount()
+            FileToCount expectedFileRead = new FileToCount
                                                {
                                                    Name = "SingleSample.txt",
                                                    WordOccurrences = MockDictionary
@@ -180,7 +182,7 @@ namespace Application.Testing
         [TestMethod]
         public void GetListOfAnalyzedFilesAndResults_AllInputsAreCorrect_ReturnsAListOfFilesCounted()
         {
-            FileToCount expectedFileRead = new FileToCount()
+            FileToCount expectedFileRead = new FileToCount
                                                {
                                                    Name = "SingleSample.txt",
                                                    WordOccurrences = MockDictionary
@@ -211,7 +213,9 @@ namespace Application.Testing
         {
             var filePathToRead = EmptySample + "EmptySample.txt";
             var expectedText = string.Empty;
+
             var returnedReadText = this.fileManager.GetTextFromFile(filePathToRead);
+
             Assert.AreEqual(expectedText, returnedReadText);
         }
 
@@ -220,7 +224,9 @@ namespace Application.Testing
         {
             var filePathToRead = SingleSample + "SingleSample.txt";
             var expectedText = "Hello there! I'm a text file!";
+
             var returnedReadText = this.fileManager.GetTextFromFile(filePathToRead);
+
             Assert.AreEqual(expectedText, returnedReadText);
         }
     }

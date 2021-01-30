@@ -1,5 +1,4 @@
 ﻿using NLog;
-using NLog.Config;
 using Infrastructure.Services.Interfaces;
 
 namespace Infrastructure.Services

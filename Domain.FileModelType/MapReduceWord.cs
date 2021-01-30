@@ -9,7 +9,6 @@
         public MapReduceWord(string word, int occurrences)
         {
             this.Word = word;
-
             this.Occurrences = occurrences;
         }
     }

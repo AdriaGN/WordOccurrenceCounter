@@ -42,6 +42,7 @@ namespace Presentation.UI
                         var results = container.Resolve<IResultsManager>();
                         results.ShowResults(inputWord?.ToLower(), countedOccurrences);
                     }
+
                     Console.WriteLine();
                 }
             }
