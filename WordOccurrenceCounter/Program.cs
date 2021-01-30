@@ -23,10 +23,7 @@ namespace Presentation.UI
 
             try
             {
-                if (args.Length.Equals(0))
-                {
-                    throw new ArgumentNullException("No directory path was inputed");
-                }
+                CheckValidInput(args);
 
                 var filesPath = args[0];
                 var inputWord = string.Empty;
@@ -55,6 +52,14 @@ namespace Presentation.UI
 
             loggerApp.Info("Press enter key to exit...");
             Console.ReadLine();
+        }
+
+        private static void CheckValidInput(string[] args)
+        {
+            if (args.Length.Equals(0))
+            {
+                throw new ArgumentNullException("No directory path was inputed");
+            }
         }
     }
 }
