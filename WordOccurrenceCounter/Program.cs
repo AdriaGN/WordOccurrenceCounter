@@ -23,6 +23,11 @@ namespace Presentation.UI
 
             try
             {
+                if (args.Length.Equals(0))
+                {
+                    throw new ArgumentNullException("No directory path was inputed");
+                }
+
                 var filesPath = args[0];
                 var inputWord = string.Empty;
 

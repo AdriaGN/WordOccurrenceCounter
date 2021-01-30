@@ -27,7 +27,7 @@ namespace Application.Services
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("No matches found");
-                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.ForegroundColor = ConsoleColor.Gray;
                 this.loggerApp.Trace("No matches found");
             }
 
@@ -35,7 +35,7 @@ namespace Application.Services
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(file.Key + ": " + file.Value + " occurrences");
-                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.ForegroundColor = ConsoleColor.Gray;
                 this.loggerApp.Trace(file.Key + ": " + file.Value + " occurrences");
             }
         }
