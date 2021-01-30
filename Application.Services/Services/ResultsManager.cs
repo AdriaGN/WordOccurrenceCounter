@@ -4,20 +4,39 @@ using System.Collections.Generic;
 using System.Linq;
 using Domain.FileModelType;
 using Application.Services.Interfaces;
+using Infrastructure.Services.Interfaces;
 
 namespace Application.Services
 {
     public class ResultsManager : IResultsManager
     {
+        private ILoggerApp loggerApp;
+
+        public ResultsManager(ILoggerApp loggerApp)
+        {
+            this.loggerApp = loggerApp;
+        }
+
         public void ShowResults(string wordToFind, List<FileToCount> listOfCountedFiles)
         {
             var filesWithOccurrences = this.CountResults(wordToFind, listOfCountedFiles);
 
             var orderedMatchingFiles = this.OrderTopFilesWithOccurrences(filesWithOccurrences);
 
+            if (orderedMatchingFiles.Count().Equals(0))
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("No matches found");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                this.loggerApp.Trace("No matches found");
+            }
+
             foreach (var file in orderedMatchingFiles)
             {
-                Console.Write(file.Key + ": " + file.Value + " occurrences" + Environment.NewLine);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(file.Key + ": " + file.Value + " occurrences");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                this.loggerApp.Trace(file.Key + ": " + file.Value + " occurrences");
             }
         }
 

@@ -2,11 +2,13 @@
 using Unity;
 using Application.Services;
 using Application.Services.Interfaces;
+using Infrastructure.Services;
+using Infrastructure.Services.Interfaces;
 
 namespace Presentation.UI
 {
     class Program
-    {
+    { 
         static void Main(string[] args)
         {
             // DI registration
@@ -14,6 +16,10 @@ namespace Presentation.UI
             container.RegisterType<IFileManager, FileManager>();
             container.RegisterType<IFileTextParser, FileTextParser>();
             container.RegisterType<IResultsManager, ResultsManager>();
+            container.RegisterType<ILoggerApp, LoggerApp>();
+
+            var loggerApp = container.Resolve<ILoggerApp>();
+            loggerApp.Debug("Starting application");
 
             try
             {
@@ -25,8 +31,9 @@ namespace Presentation.UI
 
                 while (inputWord != ":q!")
                 {
-                    Console.Write("Input the word you want to search (type :q! to exit): ");
+                    loggerApp.Info("Input the word you want to search (type :q! to exit): ");
                     inputWord = Console.ReadLine();
+                    loggerApp.Trace(inputWord);
 
                     if (inputWord != ":q!")
                     {
@@ -38,10 +45,10 @@ namespace Presentation.UI
             }
             catch (Exception exception)
             {
-                Console.WriteLine("ERROR: " + exception.Message + Environment.NewLine);
+                loggerApp.Fatal("ERROR: " + exception.Message + Environment.NewLine + exception.StackTrace + Environment.NewLine);
             }
 
-            Console.Write("Press enter key to exit...");
+            loggerApp.Info("Press enter key to exit...");
             Console.ReadLine();
         }
     }

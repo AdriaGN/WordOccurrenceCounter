@@ -7,14 +7,9 @@ namespace Application.Services
 {
     public class FileTextParser : IFileTextParser
     {
-        public FileTextParser()
-        {
-        }
-
         public Dictionary<string, int> GetOccurrencesWordDictionary(string textToAnalyze)
         {
             var cleanedTextToCount = this.RemoveSpecialCharactersFromText(textToAnalyze);
-
             var wordOccurrencesDictionary = this.CountWordsFromText(cleanedTextToCount.ToLower());
 
             return wordOccurrencesDictionary;
@@ -34,7 +29,6 @@ namespace Application.Services
         public Dictionary<string, int> CountWordsFromText(string textPreparedToCount)
         {
             var listWithMappedWords = this.Mapper(textPreparedToCount);
-
             var dictionaryWithOccurrences = this.Reducer(listWithMappedWords);
 
             return dictionaryWithOccurrences;

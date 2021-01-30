@@ -3,9 +3,11 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using Application.Services;
 using Application.Services.Interfaces;
 using Domain.FileModelType;
+using Infrastructure.Services.Interfaces;
 
 namespace Application.Testing
 {
@@ -45,11 +47,14 @@ namespace Application.Testing
 
         // DI
         private IResultsManager resultManager;
+        private ILoggerApp loggerApp;
 
         [TestInitialize]
         public void TestInitialization()
         {
-            this.resultManager = new ResultsManager();
+            var mock = new Mock<ILoggerApp>();
+            this.loggerApp = mock.Object;
+            this.resultManager = new ResultsManager(this.loggerApp);
         }
 
         [TestMethod]
@@ -96,7 +101,7 @@ namespace Application.Testing
                                                   WordOccurrences = MockDictionary
                                               };
                 List<FileToCount> listToCount = new List<FileToCount> { fileToCount };
-                var expectedConsoleOutput = ("");
+                var expectedConsoleOutput = ("No matches found" + Environment.NewLine);
 
                 this.resultManager.ShowResults("", listToCount);
 
@@ -118,7 +123,7 @@ namespace Application.Testing
                                               };
                 List<FileToCount> listToCount = new List<FileToCount> { fileToCount };
                 var expectedConsoleOutput = ("TextName: 6 occurrences" + Environment.NewLine);
-
+              
                 this.resultManager.ShowResults(wordToSearch, listToCount);
 
                 Assert.AreEqual(expectedConsoleOutput, consoleWritter.ToString());
